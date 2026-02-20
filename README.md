@@ -11,6 +11,22 @@ Jernvall [^1]. If you have some target tooth morphology (and e.g. a 3D scan of t
 
 See the [User's Guide](assets/BITES_users_guide.pdf) for instructions on how to install and use BITES effectively.
 
+BITES was developed in the Di-Poï Laboratory (University of Helsinki) and is described in detail in Razmadze et al. (2026) for simulating lizard tooth morphologies.
+
+
+## Why BITES?
+
+Developmental models are typically used in a forward exploratory manner. BITES enables inverse inference of developmental parameter landscapes from empirical 3D organ morphology, bridging morphogenesis and evolutionary inference.
+
+## Key features
+
+- Inverse Bayesian optimization of morphodynamic model parameters
+- Automated alignment (STatac + CPD)
+- Chamfer Distance–based 3D shape comparison
+- Multi-stage simulation evaluation
+- Parallel optimization support via PostgreSQL
+- GUI-based configuration and visualization
+
 ![BITES optimization schematic](assets/schematic_v6_dark.svg)
 
 ## How it works in a nutshell
@@ -22,6 +38,8 @@ See the [User's Guide](assets/BITES_users_guide.pdf) for instructions on how to 
 5. Repeat for hundreds or thousands of trials to find the best parameter configurations
 
 ## Installation
+
+Currently supported platforms: Windows
 
 Express installation guide below. For more detailed instructions, see the [User's Guide](assets/BITES_users_guide.pdf).
 
@@ -42,7 +60,7 @@ PostgreSQL is needed for parallel optimization (running multiple trials at once)
 4. In BITES, go to the PostgreSQL configuration and enter your credentials (see [User's Guide](assets/BITES_users_guide.pdf))
 
 
-## References
+## Citation
 
 If you use this software in academic work, please cite: 
 
@@ -52,6 +70,16 @@ An ancestral mechanism of tooth-shape patterning revealed by squamate tooth deve
 Under review (2026).
 ```
 
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 — see the [LICENSE](LICENSE) file for details.
+
+Third-party library licenses are listed in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES).
+
+
+## References
+
 The morphodynamic tooth model used by BITES is by Salazar-Ciudad and Jernvall [^1], with the model executable derived from [ToothMaker](https://github.com/jernvall-lab/ToothMaker). Parameter optimization is performed using the Optuna framework [^2]. Shape comparison uses Chamfer Distance as implemented in [point-cloud-utils](https://github.com/fwilliams/point-cloud-utils) [^3] and the Coherent Point Drift algorithm [^4] as implemented in [^5].
 
 [^1]: Salazar-Ciudad, I., Jernvall, J., 2010. A computational model of teeth and the developmental origins of morphological variation. *Nature*, 464, 583–586. [doi:10.1038/nature08838](https://doi.org/10.1038/nature08838)
@@ -59,11 +87,3 @@ The morphodynamic tooth model used by BITES is by Salazar-Ciudad and Jernvall [^
 [^3]: Williams, F., 2022. point-cloud-utils (v0.34). [github.com/fwilliams/point-cloud-utils](https://github.com/fwilliams/point-cloud-utils)
 [^4]: Myronenko, A., Song, X., 2010. Point set registration: Coherent point drift. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 32(12), 2262–2275. [doi:10.1109/TPAMI.2010.46](https://doi.org/10.1109/TPAMI.2010.46)
 [^5]: Gatti, A. A., Khallaghi, S., 2022. PyCPD: Pure NumPy implementation of the coherent PointDrift algorithm. *Journal of Open Source Software*, 7(80), 4681. [doi:10.21105/joss.04681](https://doi.org/10.21105/joss.04681)
-
-
-
-## License
-
-This project is licensed under the GNU General Public License v3.0 — see the [LICENSE](LICENSE) file for details.
-
-Third-party library licenses are listed in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES).
