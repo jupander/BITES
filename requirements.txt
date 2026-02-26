@@ -1,0 +1,128 @@
+alembic==1.18.3
+    # via optuna
+colorama==0.4.6 ; sys_platform == 'win32'
+    # via
+    #   colorlog
+    #   tqdm
+colorlog==6.10.1
+    # via optuna
+contourpy==1.3.3
+    # via matplotlib
+cycler==0.12.1
+    # via matplotlib
+fonttools==4.61.1
+    # via matplotlib
+freetype-py==2.5.1
+    # via vispy
+future==1.0.0
+    # via pycpd
+greenlet==3.3.1 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'
+    # via sqlalchemy
+hsluv==5.0.4
+    # via vispy
+joblib==1.5.3
+    # via scikit-learn
+kiwisolver==1.4.9
+    # via
+    #   matplotlib
+    #   vispy
+mako==1.3.10
+    # via alembic
+markupsafe==3.0.3
+    # via mako
+matplotlib==3.10.8
+    # via bites
+narwhals==2.16.0
+    # via plotly
+numpy==2.4.2
+    # via
+    #   bites
+    #   contourpy
+    #   matplotlib
+    #   optuna
+    #   pandas
+    #   point-cloud-utils
+    #   pycpd
+    #   scikit-learn
+    #   scipy
+    #   shapely
+    #   trimesh
+    #   vispy
+optuna==4.7.0
+    # via bites
+packaging==26.0
+    # via
+    #   matplotlib
+    #   optuna
+    #   plotly
+    #   vispy
+pandas==3.0.0
+    # via bites
+pillow==12.1.0
+    # via matplotlib
+plotly==6.5.2
+    # via bites
+point-cloud-utils==0.34.0
+    # via bites
+psutil==7.2.2
+    # via bites
+psycopg2-binary==2.9.11
+    # via bites
+pycpd==2.0.0
+    # via bites
+pyopengl==3.1.10
+    # via bites
+pyopengl-accelerate==3.1.10
+    # via bites
+pyparsing==3.3.2
+    # via matplotlib
+pyside6==6.10.2
+    # via bites
+pyside6-addons==6.10.2
+    # via pyside6
+pyside6-essentials==6.10.2
+    # via
+    #   pyside6
+    #   pyside6-addons
+python-dateutil==2.9.0.post0
+    # via
+    #   matplotlib
+    #   pandas
+pyyaml==6.0.3
+    # via
+    #   bites
+    #   optuna
+scikit-learn==1.8.0
+    # via bites
+scipy==1.17.0
+    # via
+    #   bites
+    #   point-cloud-utils
+    #   scikit-learn
+shapely==2.1.2
+    # via bites
+shiboken6==6.10.2
+    # via
+    #   pyside6
+    #   pyside6-addons
+    #   pyside6-essentials
+six==1.17.0
+    # via python-dateutil
+sqlalchemy==2.0.46
+    # via
+    #   alembic
+    #   optuna
+threadpoolctl==3.6.0
+    # via scikit-learn
+tqdm==4.67.3
+    # via optuna
+trimesh==4.11.1
+    # via bites
+typing-extensions==4.15.0
+    # via
+    #   alembic
+    #   sqlalchemy
+tzdata==2025.3 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+    # via pandas
+vispy==0.16.1
+    # via bites

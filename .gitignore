@@ -1,0 +1,34 @@
+# Ignore output artifacts
+results/
+results_backup/
+output/
+logs/
+backup_output_files/
+Saved_by_visualizer/
+Saved_by_Shape_Browser/
+
+# Ignore cache and system clutter
+__pycache__/
+*.py[cod]
+*.db
+.DS_Store
+
+# Ignore environments
+.env
+.venv
+*.egg-info/
+myenv/
+
+# Ignore the extra file created by the fortran model
+fort.2
+
+# Ignore some pycharm stuff
+.idea
+
+# Ignore claude stuff
+.claude
+
+
+# Ignore pyinstaller outputs
+build/
+dist/

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bites"
+version = "0.1.0"
+description = "Bayesian Inference for Tooth Emergence Simulation"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Juuso Ikola", email = "contact@juusoikola.fi"},
+]
+
+dependencies = [
+    "matplotlib>=3.10",
+    "numpy>=2.4",
+    "optuna>=4.7",
+    "pandas>=3.0",
+    "plotly>=6.5",
+    "point-cloud-utils>=0.34",
+    "psutil>=7.2",
+    "psycopg2-binary>=2.9",
+    "pycpd==2.0.0",
+    "pyside6>=6.10",
+    "pyyaml>=6.0",
+    "scikit-learn>=1.8",
+    "scipy>=1.17",
+    "shapely>=2.1",
+    "trimesh>=4.11",
+    "vispy>=0.16",
+    "PyOpenGL>=3.1",
+    "PyOpenGL-accelerate>=3.1",
+]
+
+[project.scripts]
+bites = "bites.core.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bites*"]
+exclude = ["tests*", "scripts*"]
