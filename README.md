@@ -10,7 +10,6 @@ BITES is a scientific software application developed in the [Di-Poï Lab](https:
 
 See the [User's Guide](assets/BITES_users_guide.pdf) for instructions on how to install and use BITES effectively.
 
-BITES was developed in the Di-Poï Laboratory (University of Helsinki) and is described in detail in Razmadze et al. (2026) for simulating lizard tooth morphologies.
 
 
 ## Why BITES?
