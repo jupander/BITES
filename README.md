@@ -6,7 +6,7 @@
 
 ![BITES optimization GUI example](assets/live_gui_example.png)
 
-BITES is a scientific software application developed in the [Di-Poï Lab](https://www.helsinki.fi/en/researchgroups/vertebrate-evolution-development-and-regeneration) (University of Helsinki) in 2026 for simulating squamate tooth morphology. It is designed to help researchers find the optimal parameters for generating interesting tooth shapes with the morphodynamic tooth model developed by Salazar-Ciudad and Jernvall [^1]. If you have some target tooth morphology (and e.g. a 3D scan of that tooth), and would like to discover what parameters would produce a similar shape in the computational tooth model, BITES automates this discovery process for you, using the [Optuna](https://optuna.org/) optimization framework. Rather than manually trying thousands of parameter value combinations, BITES uses Bayesian optimization to intelligently search for the best parameter configurations. The software is described and applied in Razmadze et al., 2026 (DOI: xxxx).
+BITES is a scientific software application developed in the [Di-Poï Lab](https://www.helsinki.fi/en/researchgroups/vertebrate-evolution-development-and-regeneration) (University of Helsinki) in 2026 for simulating squamate tooth morphology. It is designed to help researchers find the optimal parameters for generating interesting tooth shapes with the morphodynamic tooth model developed by Salazar-Ciudad and Jernvall [^1]. If you have some target tooth morphology (and e.g. a 3D scan of that tooth), and would like to discover what parameters would produce a similar shape in the computational tooth model, BITES automates this discovery process for you, using the [Optuna](https://optuna.org/) optimization framework. Rather than manually trying thousands of parameter value combinations, BITES uses Bayesian optimization to intelligently search for the best parameter configurations. The software is described and applied in Razmadze et al., 2026 (doi: xxxx).
 
 See the [User's Guide](assets/BITES_users_guide.pdf) for instructions on how to install and use BITES effectively.
 
@@ -64,9 +64,9 @@ PostgreSQL is needed for parallel optimization (running multiple trials at once)
 If you use this software in academic work, please cite: 
 
 ```
-Razmadze, D., Ikola, J., Aalto, I.M. & Di-Poï, N. 
-An ancestral mechanism of tooth-shape patterning revealed by squamate tooth development. 
-Under review (2026).
+Razmadze, D., Ikola, J., Aalto, I.M. & Di-Poï, N. 2026.
+An ancestral tooth-shape patterning mechanism revealed by squamate cusp development.
+bioRxiv doi: xxx
 ```
 
 
