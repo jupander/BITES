@@ -45,18 +45,16 @@ class VisualType(Enum):
 
 
 class CameraPreset(Enum):
-    """Predefined camera view angles with corresponding light directions."""
-    # (name, elevation, azimuth, light_dir)
-    # light_dir points FROM the light source toward the scene
-    X_AXIS = ("x", 0, 90, (1, 0, 0))
-    Y_AXIS = ("y", 0, 0, (0, 1, 0))
-    Z_AXIS = ("z", 90, 0, (0, 0, 1))
+    """Predefined camera view angles."""
+    # (name, elevation, azimuth)
+    X_AXIS = ("x", 0, 90)
+    Y_AXIS = ("y", 0, 0)
+    Z_AXIS = ("z", 90, 0)
 
-    def __init__(self, name: str, elevation: float, azimuth: float, light_dir: Tuple[float, float, float]):
+    def __init__(self, name: str, elevation: float, azimuth: float):
         self.view_name = name
         self.elevation = elevation
         self.azimuth = azimuth
-        self.light_dir = light_dir
 
 
 # Default viewer settings
@@ -113,31 +111,25 @@ DEFAULT_SHININESS = 0.001  # Higher = tighter/smaller highlights
 # VisPy default is ~0.3, Open3D uses higher values for brighter appearance
 DEFAULT_AMBIENT_COEFFICIENT = 1.0  # Adjust this for overall brightness (0-1 range)
 
-# Light direction: points FROM the light source toward the scene
-# Default matches Y-axis view (light comes from +Y direction)
-DEFAULT_LIGHT_DIR = (0, 1, 0)
 
 # Keyboard controls help text
 HELP_TEXT = """
 =============================================
-VIEWER KEYBOARD CONTROLS
+3D VIEWER KEYBOARD CONTROLS
 =============================================
-X       : View along X-axis (light follows)
-Y       : View along Y-axis (light follows)
-Z       : View along Z-axis (light follows)
+X/Y/Z   : View along X/Y/Z-axis
 F       : Fit objects in view
-W       : Toggle source wireframe on/off
-T       : Toggle target wireframe on/off
-S       : Cycle shading (smooth/flat/uniform)
+W/T     : Toggle (source/target) wireframe visibility on/off
+A       : Toggle coordinate axes on/off
+B       : Toggle background black/white
+C       : Toggle backface culling on/off
 D       : Cycle diffuse intensity (shadow strength)
 G       : Toggle specular highlights (luster effect)
-B       : Toggle background (black/white)
-C       : Toggle backface culling on/off
-A       : Toggle coordinate axis on/off
+S       : Cycle shading (smooth/flat/uniform)
 H       : Show this help message
 ESC     : Close viewer
 
-MOUSE CONTROLS
+3D VIEWER MOUSE CONTROLS
 =============================================
 Left button + drag   : Rotate
 Right button + drag  : Zoom
@@ -273,13 +265,18 @@ class VispyMeshViewer(scene.SceneCanvas):
         self.shading_mode = DEFAULT_MESH_SHADING  # 'smooth', 'flat', or None
         self.diffuse_index = DEFAULT_DIFFUSE_INDEX  # Index into DIFFUSE_PRESETS
         self.specular_enabled = DEFAULT_SPECULAR_ENABLED  # Specular highlights on/off
-        self.light_dir = DEFAULT_LIGHT_DIR  # Light direction (synced with camera view)
+        self.light_dir = (0, 1, 0)  # Light direction (updated from camera each frame)
 
         # Set initial camera settings
         self._configure_camera(distance=DEFAULT_CAMERA_DISTANCE, axis_visible=show_axis)
 
         # Connect keyboard event
         self.events.key_press.connect(self.on_key_press)
+
+        # Update light direction from camera angles before each draw
+        self.events.draw.connect(self._on_camera_move)
+
+        self._close_filter = None  # Assigned after freeze, see below
 
         self.freeze()
 
@@ -312,6 +309,21 @@ class VispyMeshViewer(scene.SceneCanvas):
                 self.native.setWindowIcon(QIcon(str(icon_path)))
         except Exception as e:
             _logger.warning(f"Could not set VisPy window flags: {e}")
+
+        # Install event filter so clicking X on the native window triggers
+        # our close() method and fires registered close callbacks.
+        # This is outside the try/except above so failures are not silenced.
+        from PySide6.QtCore import QObject, QEvent
+        viewer_ref = self
+
+        class _CloseFilter(QObject):
+            def eventFilter(self, obj, event):
+                if event.type() == QEvent.Type.Close:
+                    viewer_ref.close()
+                return False
+
+        self._close_filter = _CloseFilter(self.native)
+        self.native.installEventFilter(self._close_filter)
 
     # ------------------------------------------------------------------------
     # Lifecycle Management
@@ -879,6 +891,28 @@ class VispyMeshViewer(scene.SceneCanvas):
         print(f"Background: {color_name}")
         self.update()
 
+    def _light_dir_from_camera(self) -> Tuple[float, float, float]:
+        """Compute a light direction vector that matches the camera's viewing direction."""
+        cam = self.view.camera
+        elev = np.radians(cam.elevation)
+        azim = np.radians(cam.azimuth)
+        # Turntable camera convention: azimuth rotates around Z, elevation tilts up
+        x = np.cos(elev) * np.sin(azim)
+        y = np.cos(elev) * np.cos(azim)
+        z = np.sin(elev)
+        return (float(x), float(y), float(z))
+
+    def _on_camera_move(self, event=None) -> None:
+        """Update light direction to follow the camera whenever the view changes."""
+        self.light_dir = self._light_dir_from_camera()
+        for mv in self.mesh_visuals:
+            if mv.is_mesh():
+                try:
+                    if self.shading_mode is not None and mv.visual.shading_filter is not None:
+                        mv.visual.shading_filter.light_dir = self.light_dir
+                except Exception:
+                    pass
+
     def _apply_lighting_to_mesh(self, mesh_visual) -> None:
         """Apply current lighting settings to a single mesh visual.
 
@@ -886,14 +920,13 @@ class VispyMeshViewer(scene.SceneCanvas):
         - shading_mode: 'smooth', 'flat', or None (controls normal interpolation)
         - diffuse: shadow intensity (from DIFFUSE_PRESETS)
         - specular: highlight/luster effect (like Open3D default)
-        - light_dir: direction the light comes from (synced with camera view)
+        - light_dir: direction the light comes from (follows camera automatically)
         """
         # Set the shading mode (smooth/flat/none)
         mesh_visual.shading = self.shading_mode
 
         # Apply lighting coefficients if shading is enabled
         if self.shading_mode is not None and mesh_visual.shading_filter is not None:
-            # Light direction (synced with camera view presets)
             mesh_visual.shading_filter.light_dir = self.light_dir
 
             # Ambient controls base brightness (higher = brighter overall)
@@ -995,12 +1028,12 @@ class VispyMeshViewer(scene.SceneCanvas):
     
     def _set_camera_view(self, preset: CameraPreset) -> None:
         """
-        Set camera to a predefined view angle and sync light direction.
+        Set camera to a predefined view angle.
 
         Parameters:
         -----------
         preset : CameraPreset
-            Camera preset to use (includes matching light direction)
+            Camera preset to use
         """
         if not hasattr(self.view.camera, 'elevation'):
             print(f"Camera does not support preset views")
@@ -1009,18 +1042,7 @@ class VispyMeshViewer(scene.SceneCanvas):
         self.view.camera.elevation = preset.elevation
         self.view.camera.azimuth = preset.azimuth
 
-        # Sync light direction with camera view
-        self.light_dir = preset.light_dir
-
-        # Apply updated light direction to all mesh visuals
-        for mv in self.mesh_visuals:
-            if mv.is_mesh():
-                try:
-                    self._apply_lighting_to_mesh(mv.visual)
-                except Exception:
-                    pass
-
-        print(f"View: {preset.view_name.upper()}-axis (light synced)")
+        print(f"View: {preset.view_name.upper()}-axis")
         self.update()
     
     def print_help(self) -> None:

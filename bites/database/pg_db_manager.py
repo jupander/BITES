@@ -17,7 +17,6 @@ from urllib.parse import urlparse, urlunparse
 # Configure logging
 #logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
-import bites.database.pg_study_importer as pg_study_importer
 from bites.constants import format_database_name
 
 DISABLED_PASSWORD_TOKEN = "PGPASS_ENABLED"

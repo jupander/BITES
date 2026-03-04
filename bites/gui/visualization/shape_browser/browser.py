@@ -300,7 +300,7 @@ class RugConsoleWindow(GeometryPersistenceMixin, QMainWindow):
             "Opens the PDF documentation in your\n"
             "system's default PDF viewer."
         )
-        guide_button.clicked.connect(lambda: gui_utils.open_users_guide(self, page=39))
+        guide_button.clicked.connect(lambda: gui_utils.open_users_guide(self, page=40))
         top_row.addWidget(guide_button)
 
         self.layout.addLayout(top_row)
@@ -372,6 +372,11 @@ class RugConsoleWindow(GeometryPersistenceMixin, QMainWindow):
         self._is_closed = True
         _logger.info("RugConsoleWindow closing")
         print("RugConsoleWindow is closing...")
+
+        # Close the visualizer (and its 3D viewer) if still alive
+        visualizer = self.visualizer
+        if visualizer is not None:
+            visualizer.on_close()
 
         for widget in self.plot_widgets:
             try:
@@ -446,8 +451,8 @@ class ResultsShapeVisualizer:
         if self._is_closing:
             return
         _logger.info("Viewer window closed")
-        self.timer.stop()
         self.viewer = None
+        self.on_close()
 
     def _on_viewer_error(self, message: str) -> None:
         """Handle viewer errors."""
@@ -533,6 +538,7 @@ class ResultsShapeVisualizer:
 
         self.viewer.show_and_activate()
         self.print_controls()
+        print("^ (See above for controls) ^\n")
         print(f"{'-'*20} Shapes sorted by '{stack_key}' {'-'*20}")
 
         mesh_info = self.model.go_to_file(0)

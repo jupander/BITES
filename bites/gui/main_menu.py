@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import (
     QMainWindow, QVBoxLayout, QHBoxLayout, QWidget,
-    QDialog, QMessageBox, QLabel, QTabWidget, QToolButton, QCheckBox
+    QDialog, QMessageBox, QLabel, QTabWidget, QToolButton, QComboBox
 )
 
 # Import tab widgets from extracted modules
@@ -58,22 +58,31 @@ class MainMenuWindow(GeometryPersistenceMixin, QMainWindow):
 
         layout = QVBoxLayout()
 
-        # Top row with native dialog toggle and guide button
+        # Top row with file dialog dropdown and guide button
         top_row = QHBoxLayout()
 
         top_row.addStretch()
 
-        # Native dialog toggle
-        native_dialog_checkbox = QCheckBox("Use native file dialogs")
-        native_dialog_checkbox.setToolTip(
-            "Toggle between the OS native file dialog and Qt's built-in dialog.\n"
+        # File dialog style dropdown
+        file_dialog_tooltip = (
+            "Choose between the OS native file dialog and Qt's built-in dialog.\n"
             "(Dialogs that open when the 'Browse' buttons are clicked)\n\n"
-            "Native dialogs match the OS look but may briefly freeze the UI.\n"
-            "Qt dialogs avoid this delay."
+            "Native dialogs match the OS look but may briefly freeze the UI in some systems.\n"
+            "Switch to Qt dialogs to avoid the freezing if it occurs."
         )
-        native_dialog_checkbox.setChecked(self.controller.settings.use_native_dialog)
-        native_dialog_checkbox.toggled.connect(self._on_native_dialog_toggled)
-        top_row.addWidget(native_dialog_checkbox)
+
+        dialog_label = QLabel("File dialogs:")
+        dialog_label.setToolTip(file_dialog_tooltip)
+        top_row.addWidget(dialog_label)
+
+        dialog_combo = QComboBox()
+        dialog_combo.addItem("Native", True)
+        dialog_combo.addItem("Qt", False)
+        dialog_combo.setToolTip(file_dialog_tooltip)
+        current_index = 0 if self.controller.settings.use_native_dialog else 1
+        dialog_combo.setCurrentIndex(current_index)
+        dialog_combo.currentIndexChanged.connect(self._on_dialog_style_changed)
+        top_row.addWidget(dialog_combo)
 
         # Guide button
         guide_button = QToolButton()
@@ -130,9 +139,10 @@ class MainMenuWindow(GeometryPersistenceMixin, QMainWindow):
         margin = 25
         self.resize(hint.width() + margin, hint.height() + margin)
 
-    def _on_native_dialog_toggled(self, checked: bool) -> None:
-        """Save the native dialog preference."""
-        self.controller.settings.use_native_dialog = checked
+    def _on_dialog_style_changed(self, index: int) -> None:
+        """Save the file dialog style preference."""
+        use_native = (index == 0)
+        self.controller.settings.use_native_dialog = use_native
 
     def closeEvent(self, event) -> None:
         # GeometryPersistenceMixin.closeEvent saves geometry automatically

@@ -97,8 +97,24 @@ class RugPlotCanvas(FigureCanvas):
         for position in ['left', 'bottom', 'right', 'top']:
             self.ax.spines[position].set_visible(False)
 
+        # Set tooltip with variable name and data range
+        self._update_tooltip()
+
         # Initial draw
         self.rugplot()
+
+    def _update_tooltip(self, highlighted_value=None) -> None:
+        """Set a Qt tooltip showing the variable name, data range, and current value."""
+        if len(self.data) == 0:
+            self.setToolTip(self.column_name)
+            return
+
+        data_min = gui_utils.set_decimal_places(self.data.min())
+        data_max = gui_utils.set_decimal_places(self.data.max())
+        tip = f"{self.column_name}\nMin: {data_min}\nMax: {data_max}"
+        if highlighted_value is not None and pd.notna(highlighted_value):
+            tip += f"\nCurrent value: {gui_utils.set_decimal_places(highlighted_value)}"
+        self.setToolTip(tip)
 
     def _initialize_static_elements(self, orange_ticks: bool = True) -> None:
         """
@@ -222,6 +238,7 @@ class RugPlotCanvas(FigureCanvas):
 
         # Draw new highlight if specified
         # Fix 2: Reject negative indices (would wrap around unexpectedly)
+        highlighted_value = None
         if highlight_index is not None and highlight_index >= 0:
             try:
                 # Fix 1: Use loc if index exists in data's index, else fall back to iloc
@@ -229,8 +246,6 @@ class RugPlotCanvas(FigureCanvas):
                     highlighted_value = self._original_data.loc[highlight_index]
                 elif highlight_index < len(self._original_data):
                     highlighted_value = self._original_data.iloc[highlight_index]
-                else:
-                    highlighted_value = None
 
                 if highlighted_value is not None and pd.notna(highlighted_value):
                     self._highlight_artist = self.ax.eventplot(
@@ -246,7 +261,9 @@ class RugPlotCanvas(FigureCanvas):
                         ha='center', va='bottom'
                     )
             except (IndexError, KeyError, TypeError):
-                pass
+                highlighted_value = None
+
+        self._update_tooltip(highlighted_value)
 
         if draw and not self._is_destroyed:
             self._safe_draw_idle()

@@ -93,7 +93,7 @@ class ConfigDialog(GeometryPersistenceMixin, DirtyTrackingMixin, QDialog):
             "Opens the PDF documentation in your\n"
             "system's default PDF viewer."
         )
-        guide_button.clicked.connect(lambda: gui_utils.open_users_guide(self, page=36))
+        guide_button.clicked.connect(lambda: gui_utils.open_users_guide(self, page=37))
         button_layout.addWidget(guide_button)
 
         button_layout.addStretch()

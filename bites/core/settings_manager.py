@@ -151,7 +151,7 @@ class SettingsManager:
     @property
     def use_native_dialog(self) -> bool:
         """Whether to use the OS native file dialog (True) or Qt's built-in dialog (False)."""
-        return self._settings.value(self.KEY_USE_NATIVE_DIALOG, False, type=bool)
+        return self._settings.value(self.KEY_USE_NATIVE_DIALOG, True, type=bool)
 
     @use_native_dialog.setter
     def use_native_dialog(self, value: bool) -> None:

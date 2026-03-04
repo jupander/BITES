@@ -142,6 +142,8 @@ def rounded_params_logging_callback(logger, significant_digits: int = 3) -> Call
     """
     def callback(study, trial):
         if trial.value is None:
+            state_label = trial.state.name.lower()  # "pruned" or "fail"
+            logger.info(f"Trial {trial.number} finished ({state_label}).")
             return
 
         # Round float parameters to specified significant digits
