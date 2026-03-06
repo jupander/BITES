@@ -5,7 +5,7 @@
 
 BITES is a scientific software application developed in the [Di-Poï Lab](https://www.helsinki.fi/en/researchgroups/vertebrate-evolution-development-and-regeneration) (University of Helsinki) in 2026 for exploring and optimizing vertebrate tooth morphologies in computational simulations.
 
-Ready-to-use versions for Windows can also be downloaded from [releases] (https://github.com/jupander/BITES/releases).
+Ready-to-use versions for Windows can also be downloaded from [releases](https://github.com/jupander/BITES/releases).
 
 ![BITES optimization GUI example](assets/live_gui_example.png)
 
