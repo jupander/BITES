@@ -3,10 +3,11 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/downloads/)
 
+BITES is a scientific software application developed in the [Di-Poï Lab](https://www.helsinki.fi/en/researchgroups/vertebrate-evolution-development-and-regeneration) (University of Helsinki) in 2026 for exploring and optimizing vertebrate tooth morphologies in computational simulations.
+
+Ready-to-use versions for Windows can be downloaded from releases.
 
 ![BITES optimization GUI example](assets/live_gui_example.png)
-
-BITES is a scientific software application developed in the [Di-Poï Lab](https://www.helsinki.fi/en/researchgroups/vertebrate-evolution-development-and-regeneration) (University of Helsinki) in 2026 for exploring and optimizing vertebrate tooth morphologies in computational simulations. 
 
 The program interfaces with the morphodynamic tooth development model originally proposed by Salazar-Ciudad and Jernvall [^1] and provides tools for automatically identifying parameter combinations that generate specific tooth shapes. Given a target morphology (e.g., a 3D scan of a real tooth), BITES searches the model’s parameter space for cellular and developmental parameter sets capable of producing comparable structures. Instead of manually testing thousands of parameter combinations, BITES uses Bayesian optimization via the [Optuna](https://optuna.org/) framework to intelligently search for the best parameter configurations. 
 
