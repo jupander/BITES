@@ -70,7 +70,7 @@ If you use this software in academic work, please cite:
 
 ```
 Razmadze, D., Ikola, J., Aalto, I.M. & Di-Poï, N. 2026.
-An ancestral tooth-shape patterning mechanism revealed by squamate cusp development.
+An alternative patterning mechanism for vertebrate tooth shape.
 bioRxiv doi: xxx
 ```
 
