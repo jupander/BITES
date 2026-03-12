@@ -14,6 +14,7 @@ BITES is a scientific software application developed in the [Di-Poï Lab](https:
 The program interfaces with the morphodynamic tooth development model originally proposed by Salazar-Ciudad and Jernvall [^1] and provides tools for automatically identifying parameter combinations that generate specific tooth shapes. Given a target morphology (e.g., a 3D scan of a real tooth), BITES searches the model’s parameter space for cellular and developmental parameter sets capable of producing comparable structures. Instead of manually testing thousands of parameter combinations, BITES uses Bayesian optimization via the [Optuna](https://optuna.org/) framework to intelligently search for the best parameter configurations. 
 
 The software is described and applied to lizard dentitions in Razmadze et al., 2026 (doi: [10.64898/2026.03.12.711251](https://www.biorxiv.org/cgi/content/short/2026.03.12.711251v1)).
+
 See the [User's Guide](assets/BITES_users_guide.pdf) for instructions on how to install and use BITES effectively.
 
 
