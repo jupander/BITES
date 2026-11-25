@@ -69,9 +69,8 @@ PostgreSQL is needed for parallel optimization (running multiple trials at once)
 
 If you use this software in academic work, please cite: 
 
-Razmadze, D., Ikola, J., Aalto, I.M. & Di-Poï, N. 2026.
-An alternative patterning mechanism for vertebrate tooth complexity.
-bioRxiv doi: [10.64898/2026.03.12.711251](https://doi.org/10.64898/2026.03.12.711251)
+Razmadze, D., Ikola, J., Aalto, I.M. & Di-Poï, N. 2026. An alternative patterning mechanism for vertebrate tooth complexity. Proc Natl Acad Sci U S A. 2026;123(48):e2630883123.
+(https://doi.org/10.1073/pnas.2630883123)
 
 
 ## License
